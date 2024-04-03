@@ -14,8 +14,8 @@ const UPDATE_TODO = gql`
 `;
 
 const DELETE_TODO = gql`
-  mutation deleteTodo($id: ID!) {
-    deleteTodo(id: $id) 
+  mutation DELETE_TODO($id: ID!) {
+    DELETE_TODO(id: $id) 
   }
 `;
 
@@ -24,7 +24,7 @@ const TodoItem = ({ todo, onUserAssign }) => {
   const [updatedTask, setUpdatedTask] = useState(todo.task);
 
   const [updateTodo, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_TODO);
-  const [deleteTodo, { loading: deleteLoading, error: deleteError }] = useMutation(DELETE_TODO, {
+  const [DELETE_TODO, { loading: deleteLoading, error: deleteError }] = useMutation(DELETE_TODO, {
     refetchQueries: [{ query: GET_TODOS }] // Update UI after delete
   }); 
 
@@ -38,7 +38,7 @@ const TodoItem = ({ todo, onUserAssign }) => {
   };
 
   const handleDelete = () => {
-    deleteTodo({ variables: { id: todo._id } });
+    DELETE_TODO({ variables: { id: todo._id } });
   };
 
   // Handle potential errors (e.g., display feedback to the user)
@@ -50,9 +50,9 @@ const TodoItem = ({ todo, onUserAssign }) => {
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <Checkbox 
         status={todo.completed ? 'checked' : 'unchecked'} 
-        onPress={() => updateTodo({ 
-          variables: { id: todo._id, task: todo.task, completed: !todo.completed } 
-        })}
+        onPress={() => {
+          updateTodo({ variables: { id: todo._id, task: todo.task, completed: !todo.completed } });
+      }}
       />
 
       {isEditing ? (

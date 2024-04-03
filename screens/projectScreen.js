@@ -1,64 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator, Text } from 'react-native';
-import { useQuery, useMutation } from '@apollo/client';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
 
-import TodoItem from '../components/TodoItem';
-import AddTodoForm from '../components/AddTodoForm';
-
-const GET_TODOS = gql`
-  query getTodosByProject($projectId: ID!) {
-    todos(where: { projectId: $projectId }) {
+const GET_PROJECT = gql`
+  query project($projectId: ID!) {
+    project(id: $projectId) {
       _id
-      task
-      completed
+      name
+      # ... potentially fetch associated todos here
     }
   }
 `;
 
-const CREATE_TODO = gql`
-  mutation createTodo($task: String!, $projectId: ID!) {
-    createTodo(task: $task, projectId: $projectId) {
-      _id
-      task
-      completed
-    }
-  }
-`;
+const ProjectScreen = ({ route }) => {
+  const projectId = route.params.projectId;
 
-const TodoListScreen = ({ route }) => {
-  const projectId = route.params.projectId; // Getting project ID from navigation
-
-  const { loading, error, data, refetch } = useQuery(GET_TODOS, {
+  const { loading, error, data } = useQuery(GET_PROJECT, {
     variables: { projectId },
-  });
-
-  const [createTodo] = useMutation(CREATE_TODO, {
-    // Optimistic updates or refetchQueries for instant UI updates 
   });
 
   if (loading) return <ActivityIndicator size="large" />;
   if (error) return <Text>Error: {error.message}</Text>;
 
-  const handleAddTodo = (newTask) => {
-    createTodo({ variables: { task: newTask, projectId } });
-  };
+  const { project } = data;
 
   return (
-    <View style={{ flex: 1 }}>
-      <AddTodoForm projectId={projectId} onAddTodo={handleAddTodo} />
+    <View style={styles.container}>
+      <Text style={styles.title}>{project.name}</Text>
+      {/* Consider adding more UI elements to display project details */}
 
-      <FlatList
-        data={data.todos}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <TodoItem todo={item} /> 
-        )}
-        onRefresh={refetch} // Add pull-to-refresh
-        refreshing={loading} // Use the 'loading' state for refresh indicator
+      {/* A button to navigate to the Project's Todo List: */}
+      <Button 
+        title="View Todos"
+        onPress={() => navigation.navigate('TodoListScreen', { projectId })}
       />
     </View>
   );
 };
 
-export default TodoListScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+});
+
+export default ProjectScreen;
