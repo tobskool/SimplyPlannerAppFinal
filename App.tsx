@@ -125,6 +125,14 @@ import apolloClient from './config/apollo';
 import ProjectScreen from './screens/ProjectScreen';
 import TodoListScreen from './screens/TodoListScreen';
 
+const config = require('./config');
+const mongoose = require('mongoose');
+
+mongoose.connect(config.mongodbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+
 const Stack = createStackNavigator();
 
 const App = () => {
