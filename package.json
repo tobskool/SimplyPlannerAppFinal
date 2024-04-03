@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.10",
+    "@react-navigation/native": "^6.1.17",
+    "@react-navigation/stack": "^6.3.29",
     "apollo-client": "^2.6.10",
     "graphql": "^15.8.0",
     "react": "18.2.0",
@@ -26,7 +28,9 @@
     "@react-native/eslint-config": "0.73.2",
     "@react-native/metro-config": "0.73.5",
     "@react-native/typescript-config": "0.73.1",
+    "@types/": "react-navigation/stack",
     "@types/react": "^18.2.6",
+    "@types/react-query": "^1.2.9",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.6.3",
     "eslint": "^8.19.0",
