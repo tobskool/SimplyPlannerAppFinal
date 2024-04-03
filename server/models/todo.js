@@ -11,7 +11,7 @@ const TodoSchema = new mongoose.Schema({
   },
   project: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Project' // Need to add project model after
+    ref: 'Project'
   }
 });
 
