@@ -1,14 +1,26 @@
 const { gql } = require('apollo-server');
 
 const typeDefs = gql`
-    type Todo {
+
+    type User {
       _id: ID!
-      task: String!
-      completed: Boolean!
+      username: String!
+      email: String!
+      projects: [Project!]! 
     }
 
     type Query {
-      todos: [Todo!]!
+      todos(where: TodoWhereInput): [Todo!]! 
+      projects: [Project!]! 
+    }
+
+    type Project {
+      _id: ID!
+      name: String!
+      description: String 
+      dueDate: Date
+      todos: [Todo!]! 
+      owner: User!
     }
 
     type Mutation {
@@ -16,6 +28,26 @@ const typeDefs = gql`
       updateTodo(id: ID!, task: String, completed: Boolean): Todo!
       DELETE_TODO(id: ID!): Boolean!
     }
-`;
 
-module.exports = typeDefs;
+    type Todo {
+      _id: ID!
+      task: String!
+      completed: Boolean!
+      dueDate: Date 
+      urgency: Int 
+      project: Project! 
+    }
+  
+    type Project {
+      _id: ID!
+      name: String!
+      description: String 
+      dueDate: Date
+      todos: [Todo!]! 
+      owner: User!
+    }
+  
+    input TodoWhereInput {
+      projectId: ID 
+    }
+`;

@@ -31,8 +31,6 @@ const ProjectList = ({ navigation }) => {
     refetchQueries: [{ query: GET_PROJECTS }],
   });
 
-  // ... handleProjectPress (existing code) ...
-
   const handleAddProject = async () => {
     try {
       await createProject({ variables: { name: newProjectName } });
