@@ -16,8 +16,6 @@ const resolvers = {
       return await Todo.find({ project: projectId });
     },
     projects: async () => await Project.find(),
-
-    // ... add a resolver for fetching a single todo by ID 
   },
 
   Mutation: {
@@ -49,8 +47,6 @@ const resolvers = {
       return true
     },
 
-    // ... add mutations for projects
-
     createUser: async (_, { username, email }) => {
       const existingUser = await User.findOne({ email }); 
       if (existingUser) {
@@ -66,9 +62,7 @@ const resolvers = {
   // Relationships - Resolving Nested Data
   Project: {
     todos: async (parent) => await Todo.find({ project: parent._id }),
-  },
-  
-  // ... add resolvers for Todo and User relationships
+  },  
 };
 
 module.exports = resolvers;
